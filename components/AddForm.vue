@@ -10,7 +10,7 @@
       <a-list-item slot="renderItem" key="item.id" slot-scope="item">
         <a-list-item-meta :title="item.title" />
         <img slot="extra" alt="poster" :src="item.poster_url" width="154" />
-        <a-button v-if="idIndex[item.id] === 'tmdb'" slot="actions" icon="check" disabled>Added</a-button>
+        <a-button v-if="idIndex[item.id]" slot="actions" icon="check" disabled>Added</a-button>
         <a-button v-else slot="actions" type="primary" icon="plus" @click="add(item)">
           Add
         </a-button>
@@ -76,10 +76,6 @@ export default {
     add(item) {
       const show = {
         type: this.type,
-        title: item.title,
-        summary: item.summary,
-        poster_url: item.poster_url,
-        backdrop_url: item.backdrop_url,
         external_id: item.id,
         external_source: 'tmdb'
       };

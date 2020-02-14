@@ -23,9 +23,9 @@
                   <a-list-item-meta>
                     <span slot="title" style="word-break: break-all">{{ item.title }}</span>
                   </a-list-item-meta>
-                  <a slot="actions" :href="item.link">
-                    <a-icon type="download" />
-                  </a>
+                  <a-button-group slot="actions">
+                    <a-button icon="download" @click="download(item.link)" />
+                  </a-button-group>
                 </a-list-item>
               </a-list>
             </a-tab-pane>
@@ -70,14 +70,17 @@ export default {
     async lookup() {
       if (this.show.external_id) {
         this.loading = true;
-        const nzbs = await this.$axios.$get(`/api/search/nzb?name=${this.show.title}`);
+        const nzbs = await this.$axios.$get(`/api/search/nzb?imdb_id=${this.show.imdb_id}`);
         this.downloads = nzbs.data;
         this.loading = false;
       }
     },
     async deleteShow() {
-      await this.$axios.$delete(`/api/shows/${this.show.id}`);
+      await this.$axios.$delete(`/api/library/${this.show.id}`);
       this.$router.go(-1);
+    },
+    async download(url) {
+      await this.$axios.$get(`/api/downloader?url=${encodeURIComponent(url)}`);
     },
     handleChange(key) {
       if (this.downloads.length === 0 && key === 'downloads') {

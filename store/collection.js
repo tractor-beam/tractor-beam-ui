@@ -21,13 +21,13 @@ export const actions = {
   async loadCollection({ commit }) {
     const result = await this.$axios.$get('/api/library');
     const idIndex = result.data.reduce((acc, value) => {
-      acc[value.external_id] = value.external_source;
+      acc[value.external_id] = value.id;
       return acc;
     }, {});
     commit('RELOAD_SHOW', { shows: result.data, idIndex });
   },
   async addShow({ commit }, show) {
-    const result = await this.$axios.$post('/api/library', { show });
+    const result = await this.$axios.$post('/api/library', show);
     commit('ADD_SHOW', result.data);
   }
 };
